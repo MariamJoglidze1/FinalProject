@@ -1,7 +1,7 @@
 import SwiftUI
 
 @Observable
-class Favorites {
+class Favourites {
     private var countries: Set<String>
 
     private let key = "Favorites"
@@ -26,5 +26,6 @@ class Favorites {
     }
 
     func save() {
+        
     }
 }

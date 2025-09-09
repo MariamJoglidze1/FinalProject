@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CountriesListView: View {
     @StateObject private var viewModel = CountriesViewModel()
-    
+
     var body: some View {
         NavigationView {
             List {
@@ -39,6 +39,7 @@ struct CountriesListView: View {
 
 struct CountryRow: View {
     let country: Country
+    @Environment(Favourites.self) var favourites
     
     var body: some View {
         HStack {
@@ -49,44 +50,49 @@ struct CountryRow: View {
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
-            
             Spacer()
-            
             Button {
-                print("Favourite tapped")
+                if favourites.contains(country) {
+                    favourites.remove(country)
+                } else {
+                    favourites.add(country)
+                }
             } label: {
-                Image(systemName: "heart.fill")
-                    .foregroundColor(.gray)
-                    .imageScale(.large)
+                Image(systemName: favourites.contains(country) ? "heart.fill" : "heart")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 24, height: 24)
+                    .foregroundColor(.red)
             }
-            .buttonStyle(BorderlessButtonStyle())
-        }
-        .padding(.vertical, 4)
-    }
-}
-
-struct ErrorView: View {
-    let message: String
-    let retryAction: () -> Void
-    
-    var body: some View {
-        VStack(spacing: 16) {
-            Text(message)
-                .foregroundColor(.red)
-                .multilineTextAlignment(.center)
+            .buttonStyle(.plain)
+            .padding()
             
-            Button("Retry", action: retryAction)
-                .padding(.horizontal, 20)
-                .padding(.vertical, 10)
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(8)
+            
         }
-        .padding()
     }
 }
+    struct ErrorView: View {
+        let message: String
+        let retryAction: () -> Void
+        
+        var body: some View {
+            VStack(spacing: 16) {
+                Text(message)
+                    .foregroundColor(.red)
+                    .multilineTextAlignment(.center)
+                
+                Button("Retry", action: retryAction)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 10)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+            }
+            .padding()
+        }
+    }
 
-#Preview {
-    CountriesListView()
-}
-
+    
+//    #Preview {
+//        CountriesListView()
+//    }
