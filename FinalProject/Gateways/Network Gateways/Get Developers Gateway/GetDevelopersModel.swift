@@ -5,7 +5,6 @@ struct Country: Codable, Identifiable, Equatable {
     let currencyCodes: [String]
     let name: String
     let wikiDataId: String
-    
     var id: String { code }
 }
 
