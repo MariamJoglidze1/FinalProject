@@ -12,5 +12,3 @@ struct FinalProjectApp: App {
                .environment(favourites)
     }
 }
-
-

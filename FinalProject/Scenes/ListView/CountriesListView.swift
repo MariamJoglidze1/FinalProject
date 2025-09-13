@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftUI
 
 struct CountriesListView: View {
     @StateObject private var viewModel = CountriesViewModel()
@@ -18,8 +19,10 @@ struct CountriesListView: View {
                 else {
                     List {
                         ForEach(viewModel.countries) { country in
-                            CountryRow(country: country)
-                                .task { await viewModel.loadMoreIfNeeded(current: country) }
+                            NavigationLink(destination: DetailsView(country: country)) {
+                                CountryRow(country: country)
+                            }
+                            .task { await viewModel.loadMoreIfNeeded(current: country) }
                         }
 
                         if let error = viewModel.errorMessage,
