@@ -5,7 +5,7 @@ class Favourites {
     private var countries: Set<String>
     private let key = "Favorites"
 
-    init() {
+    init(storage: UserDefaults = .standard) {
         if let saved = UserDefaults.standard.array(forKey: key) as? [String] {
             countries = Set(saved)
         } else {

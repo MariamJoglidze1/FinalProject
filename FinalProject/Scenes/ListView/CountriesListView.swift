@@ -1,19 +1,16 @@
 import SwiftUI
-import SwiftUI
 
 struct CountriesListView: View {
     @StateObject private var viewModel = CountriesViewModel()
-
+    
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Group {
                 if let error = viewModel.errorMessage,
                    !viewModel.isLoading,
                    viewModel.countries.isEmpty {
-                    VStack {
-                        ErrorView(message: error) {
-                            Task { await viewModel.retry() }
-                        }
+                    ErrorView(message: error) {
+                        Task { await viewModel.retry() }
                     }
                 }
                 else {
@@ -24,7 +21,7 @@ struct CountriesListView: View {
                             }
                             .task { await viewModel.loadMoreIfNeeded(current: country) }
                         }
-
+                        
                         if let error = viewModel.errorMessage,
                            !viewModel.isLoading,
                            !viewModel.countries.isEmpty {
@@ -32,7 +29,7 @@ struct CountriesListView: View {
                                 Task { await viewModel.retry() }
                             }
                         }
-
+                        
                         if viewModel.isLoading {
                             HStack {
                                 Spacer()
@@ -54,24 +51,23 @@ struct CountriesListView: View {
 }
 
 
-
 struct CountryRow: View {
     let country: Country
-    @Environment(Favourites.self) var favourites
-
+    @Environment(Favourites.self) private var favourites
+    
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
                 Text(country.name)
                     .font(.headline)
-
+                
                 Text("Currencies: \(country.currencyCodes.joined(separator: ", "))")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
-
+            
             Spacer()
-
+            
             Button {
                 if favourites.contains(country) {
                     favourites.remove(country)
@@ -95,13 +91,13 @@ struct CountryRow: View {
 struct ErrorView: View {
     let message: String
     let retryAction: () -> Void
-
+    
     var body: some View {
         VStack(spacing: 16) {
             Text(message)
                 .foregroundColor(.red)
                 .multilineTextAlignment(.center)
-
+            
             Button("Retry", action: retryAction)
                 .padding(.horizontal, 20)
                 .padding(.vertical, 10)
@@ -112,4 +108,3 @@ struct ErrorView: View {
         .padding()
     }
 }
-
