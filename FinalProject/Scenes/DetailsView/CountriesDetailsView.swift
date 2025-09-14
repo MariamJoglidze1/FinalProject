@@ -36,7 +36,7 @@ struct DetailsView: View {
                         infoRow(label: "Capital", value: capital)
                     }
                     
-                    if let population = details.population {
+                    if let population = viewModel.populationText {
                         infoRow(label: "Population", value: population)
                     }
                     

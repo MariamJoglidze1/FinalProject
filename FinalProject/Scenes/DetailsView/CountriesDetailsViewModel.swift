@@ -23,5 +23,10 @@ class DetailsViewModel: ObservableObject {
         }
         isLoading = false
     }
+
+    var populationText: String? {
+        details?.population?.formattedWithSeparator
+    }
+
 }
 

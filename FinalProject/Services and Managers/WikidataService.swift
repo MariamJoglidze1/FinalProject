@@ -45,7 +45,9 @@ struct WikidataService: WikidataServiceProtocol {
                let datavalue = mainsnak["datavalue"] as? [String: Any],
                let amount = datavalue["value"] as? [String: Any],
                let populationValue = amount["amount"] as? String {
-                details.population = populationValue.replacingOccurrences(of: "+", with: "")
+               let cleaned = populationValue.replacingOccurrences(of: "+", with: "")
+               details.population = Int(cleaned)
+
             }
             
             // Continent
