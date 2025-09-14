@@ -12,7 +12,7 @@ struct WikidataService: WikidataServiceProtocol {
         }
         
         let (data, _) = try await URLSession.shared.data(from: url)
-        let json = try JSONSerialization.jsonObject(with: data) as! [String: Any]
+        guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else { throw URLError(.badServerResponse) }
         
         var details = CountryDetails()
         
@@ -81,4 +81,3 @@ struct WikidataService: WikidataServiceProtocol {
         throw URLError(.cannotParseResponse)
     }
 }
-

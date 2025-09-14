@@ -1,7 +1,11 @@
 import SwiftUI
 
 struct CountriesListView: View {
-    @StateObject private var viewModel = CountriesViewModel()
+    private var viewModel: CountriesViewModel
+   
+    init() {
+        viewModel = CountriesViewModel()
+    }
     
     var body: some View {
         NavigationStack {

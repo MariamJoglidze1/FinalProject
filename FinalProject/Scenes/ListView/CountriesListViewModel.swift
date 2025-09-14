@@ -1,14 +1,14 @@
 import SwiftUI
 
 @MainActor
-class CountriesViewModel: ObservableObject {
-    @Published var countries: [Country] = []
-    @Published var isLoading = false
-    @Published var errorMessage: String?
+@Observable
+final class CountriesViewModel {
+    private(set) var countries: [Country] = []
+    private(set) var isLoading = false
+    private(set) var errorMessage: String?
     
     private var nextPageURL: String? = "https://wft-geo-db.p.rapidapi.com/v1/geo/countries?limit=10"
     private let service: CountriesServiceProtocol
-    
     
     init(service: CountriesServiceProtocol = CountriesService()) {
         self.service = service
@@ -37,11 +37,10 @@ class CountriesViewModel: ObservableObject {
         
         
         do {
-            let decoded = try await service.fetchPage(urlString: urlString)
-            countries.append(contentsOf: decoded.data)
+            let response = try await service.fetchPage(urlString: urlString)
+            countries.append(contentsOf: response.data)
             
-            
-            if let nextLink = decoded.links.first(where: { $0.rel == "next" }) {
+            if let nextLink = response.links.first(where: { $0.rel == "next" }) {
                 nextPageURL = nextLink.href.hasPrefix("http") ? nextLink.href : "https://wft-geo-db.p.rapidapi.com" + nextLink.href
             } else {
                 nextPageURL = nil

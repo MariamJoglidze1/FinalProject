@@ -1,10 +1,10 @@
 import SwiftUI
 
 @Observable
-class Favourites {
+final class Favourites {
     private var countries: Set<String>
     private let key = "Favorites"
-
+    
     init(storage: UserDefaults = .standard) {
         if let saved = UserDefaults.standard.array(forKey: key) as? [String] {
             countries = Set(saved)
@@ -12,24 +12,22 @@ class Favourites {
             countries = []
         }
     }
-
+    
     func contains(_ country: Country) -> Bool {
         countries.contains(country.id)
     }
-
+    
     func add(_ country: Country) {
         countries.insert(country.id)
         save()
     }
-
+    
     func remove(_ country: Country) {
         countries.remove(country.id)
         save()
     }
-
+    
     private func save() {
         UserDefaults.standard.set(Array(countries), forKey: key)
     }
 }
-
-

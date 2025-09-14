@@ -1,18 +1,25 @@
 import Foundation
 
 @MainActor
-class DetailsViewModel: ObservableObject {
-    @Published private(set) var details: CountryDetails?
-    @Published private(set) var isLoading = false
-    @Published private(set) var errorMessage: String?
+@Observable
+final class DetailsViewModel {
+    private(set) var details: CountryDetails?
+    private(set) var isLoading = false
+    private(set) var errorMessage: String?
     
     private let service: WikidataServiceProtocol
     private let country: Country
     
-    init(service: WikidataServiceProtocol = WikidataService(),
-         country: Country) {
-    self.service = service
+    init(
+        service: WikidataServiceProtocol = WikidataService(),
+        country: Country
+    ) {
+        self.service = service
         self.country = country
+    }
+    
+    var populationText: String? {
+        details?.population?.formattedWithSeparator
     }
     
     // MARK: - Data loading
@@ -27,10 +34,5 @@ class DetailsViewModel: ObservableObject {
         }
         isLoading = false
     }
-
-    var populationText: String? {
-        details?.population?.formattedWithSeparator
-    }
-
 }
 
