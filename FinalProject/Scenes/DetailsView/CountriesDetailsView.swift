@@ -10,8 +10,9 @@ struct DetailsView: View {
                 if viewModel.isLoading {
                     ProgressView("Loading details…")
                 } else if let error = viewModel.errorMessage {
-                    Text(error)
-                        .foregroundColor(.red)
+                    ErrorView(message: error) {
+                        Task { await viewModel.load(for: country.wikiDataId) }
+                    }
                 } else if let details = viewModel.details {
                     
                     if let flagURL = details.flagURL {

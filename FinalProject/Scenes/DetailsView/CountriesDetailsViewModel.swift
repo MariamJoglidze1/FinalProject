@@ -2,14 +2,14 @@ import Foundation
 
 @MainActor
 class DetailsViewModel: ObservableObject {
-    @Published var details: CountryDetails?
-    @Published var isLoading = false
-    @Published var errorMessage: String?
+    @Published private(set) var details: CountryDetails?
+    @Published private(set) var isLoading = false
+    @Published private(set) var errorMessage: String?
     
-    private let service: WikidataServicing
+    private let service: WikidataServiceProtocol
     
-    init(service: WikidataServicing = WikidataService()) {
-        self.service = service
+    init(service: WikidataServiceProtocol = WikidataService()) {
+    self.service = service
     }
     
     func load(for wikiDataId: String) async {

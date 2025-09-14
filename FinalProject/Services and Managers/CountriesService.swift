@@ -8,7 +8,7 @@ protocol CountriesServiceProtocol {
 struct CountriesService: CountriesServiceProtocol {
     private let baseURL = "https://wft-geo-db.p.rapidapi.com"
     private let headers = [
-        "x-rapidapi-key": "YOUR_API_KEY_HERE",
+        "x-rapidapi-key": "af89b7b859msh76f4aa94196b1c7p16ea9djsnb51a2f8c0353",
         "x-rapidapi-host": "wft-geo-db.p.rapidapi.com"
     ]
     

@@ -1,11 +1,11 @@
 import Foundation
 
-protocol WikidataServicing {
+protocol WikidataServiceProtocol {
     func fetchCountryDetails(for wikiDataId: String) async throws -> CountryDetails
     func fetchLabel(for entityId: String) async throws -> String
 }
 
-struct WikidataService: WikidataServicing {
+struct WikidataService: WikidataServiceProtocol {
     func fetchCountryDetails(for wikiDataId: String) async throws -> CountryDetails {
         guard let url = URL(string: "https://www.wikidata.org/wiki/Special:EntityData/\(wikiDataId).json") else {
             throw URLError(.badURL)
