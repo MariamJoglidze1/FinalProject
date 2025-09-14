@@ -26,8 +26,9 @@ struct WikidataService: WikidataServicing {
                let datavalue = mainsnak["datavalue"] as? [String: Any],
                let filename = datavalue["value"] as? String {
                 let filePath = filename.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? filename
-                details.flagURL = URL(string: "https://commons.wikimedia.org/wiki/Special:FilePath/\(filePath)")
+                details.flagURL = URL(string: "https://commons.wikimedia.org/wiki/Special:FilePath/\(filePath)?width=300")
             }
+            
             
             // Capital
             if let capitalArray = claims["P36"] as? [[String: Any]],
