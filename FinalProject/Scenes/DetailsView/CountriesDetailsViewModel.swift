@@ -7,11 +7,15 @@ class DetailsViewModel: ObservableObject {
     @Published private(set) var errorMessage: String?
     
     private let service: WikidataServiceProtocol
+    private let country: Country
     
-    init(service: WikidataServiceProtocol = WikidataService()) {
+    init(service: WikidataServiceProtocol = WikidataService(),
+         country: Country) {
     self.service = service
+        self.country = country
     }
     
+    // MARK: - Data loading
     func load(for wikiDataId: String) async {
         isLoading = true
         errorMessage = nil

@@ -2,11 +2,32 @@ import SwiftUI
 
 struct DetailsView: View {
     let country: Country
-    @StateObject private var viewModel = DetailsViewModel()
+    @StateObject private var viewModel: DetailsViewModel
+    @Environment(Favourites.self) private var favourites   // ✅ directly from Environment
+    
+    init(country: Country) {
+        self.country = country
+        _viewModel = StateObject(wrappedValue: DetailsViewModel(country: country))
+    }
     
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
+                Button {
+                    if favourites.contains(country) {
+                        favourites.remove(country)
+                    } else {
+                        favourites.add(country)
+                    }
+                } label: {
+                    Image(systemName: favourites.contains(country) ? "heart.fill" : "heart")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(.red)
+                }
+                .buttonStyle(.plain)
+                
                 if viewModel.isLoading {
                     ProgressView("Loading details…")
                 } else if let error = viewModel.errorMessage {
