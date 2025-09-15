@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CountriesListView: View {
     private var viewModel: CountriesViewModel
-   
+    
     init() {
         viewModel = CountriesViewModel()
     }
@@ -50,65 +50,74 @@ struct CountriesListView: View {
                     await viewModel.fetchCountries()
                 }
             }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink {
+                        ProfileView(profile: .mock)
+                    } label: {
+                        Image(systemName: "person.crop.circle")
+                            .font(.title2)
+                    }
+                }
+            }
         }
     }
 }
-
-
-struct CountryRow: View {
-    let country: Country
-    @Environment(Favourites.self) private var favourites
     
-    var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(country.name)
-                    .font(.headline)
-                
-                Text("Currencies: \(country.currencyCodes.joined(separator: ", "))")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-            }
-            
-            Spacer()
-            
-            Button {
-                if favourites.contains(country) {
-                    favourites.remove(country)
-                } else {
-                    favourites.add(country)
+    struct CountryRow: View {
+        let country: Country
+        @Environment(Favourites.self) private var favourites
+        
+        var body: some View {
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(country.name)
+                        .font(.headline)
+                    
+                    Text("Currencies: \(country.currencyCodes.joined(separator: ", "))")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
                 }
-            } label: {
-                Image(systemName: favourites.contains(country) ? "heart.fill" : "heart")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 24, height: 24)
-                    .foregroundColor(.red)
+                
+                Spacer()
+                
+                Button {
+                    if favourites.contains(country) {
+                        favourites.remove(country)
+                    } else {
+                        favourites.add(country)
+                    }
+                } label: {
+                    Image(systemName: favourites.contains(country) ? "heart.fill" : "heart")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(.red)
+                }
+                .buttonStyle(.plain)
+                .padding()
             }
-            .buttonStyle(.plain)
+        }
+    }
+    
+    
+    struct ErrorView: View {
+        let message: String
+        let retryAction: () -> Void
+        
+        var body: some View {
+            VStack(spacing: 16) {
+                Text(message)
+                    .foregroundColor(.red)
+                    .multilineTextAlignment(.center)
+                
+                Button("Retry", action: retryAction)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 10)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+            }
             .padding()
         }
     }
-}
-
-
-struct ErrorView: View {
-    let message: String
-    let retryAction: () -> Void
-    
-    var body: some View {
-        VStack(spacing: 16) {
-            Text(message)
-                .foregroundColor(.red)
-                .multilineTextAlignment(.center)
-            
-            Button("Retry", action: retryAction)
-                .padding(.horizontal, 20)
-                .padding(.vertical, 10)
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(8)
-        }
-        .padding()
-    }
-}
