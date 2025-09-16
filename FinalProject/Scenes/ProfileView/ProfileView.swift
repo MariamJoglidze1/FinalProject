@@ -6,7 +6,7 @@ struct ProfileView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 30) {
-                ProfileImageView(imageName: "profile-photo")
+                profileImageView(name: "profile-photo")
                 ProfileNameView(name: profile.name, description: profile.description)
                 Divider()
                 AboutMeSection(text: profile.about)
@@ -18,6 +18,62 @@ struct ProfileView: View {
         }
         .navigationTitle("Profile")
     }
+    
+    private func profileImageView(name: String) -> some View {
+        Image(name)
+            .resizable()
+            .scaledToFill()
+            .frame(width: 150, height: 150)
+            .clipShape(Circle())
+            .overlay(Circle().stroke(Color.blue, lineWidth: 3))
+            .shadow(radius: 5)
+    }
+    
+    private func AboutMeSection(text: String) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("About Me")
+                .font(.headline)
+            
+            Text(text)
+                .font(.body)
+        }
+    }
+    
+    private func ProfileNameView(name: String, description: String) -> some View {
+        VStack(spacing: 5) {
+            Text(name)
+                .font(.title)
+                .fontWeight(.bold)
+            
+            Text(description)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+        }
+    }
+    
+    private func SocialLinksSection(links: [SocialLink])-> some View {
+        VStack(spacing: 15) {
+            Text("Connect with me")
+                .font(.headline)
+            
+            HStack(spacing: 30) {
+                ForEach(links) { link in
+                    if let url = URL(string: link.url) {
+                        SwiftUI.Link(destination: url) {
+                            Image(systemName: link.systemImage)
+                                .font(.title2)
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(Circle().fill(link.color))
+                                .shadow(radius: 3)
+                        }
+                    }
+                }
+            }
+        }
+        .padding(.bottom, 40)
+    }
 }
 
 struct ProfileView_Previews: PreviewProvider {
@@ -27,3 +83,5 @@ struct ProfileView_Previews: PreviewProvider {
         }
     }
 }
+
+
