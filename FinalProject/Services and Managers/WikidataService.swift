@@ -50,6 +50,17 @@ struct WikidataService: WikidataServiceProtocol {
 
             }
             
+            // Coordinates
+            if let coordsArray = claims["P625"] as? [[String: Any]],
+               let mainsnak = coordsArray.first?["mainsnak"] as? [String: Any],
+               let datavalue = mainsnak["datavalue"] as? [String: Any],
+               let value = datavalue["value"] as? [String: Any],
+               let latitude = value["latitude"] as? Double,
+               let longitude = value["longitude"] as? Double {
+                details.latitude = latitude
+                details.longitude = longitude
+            }
+            
             // Continent
             if let contArray = claims["P30"] as? [[String: Any]],
                let mainsnak = contArray.first?["mainsnak"] as? [String: Any],
