@@ -45,10 +45,10 @@ struct DetailsView: View {
                             .font(.title)
                             .fontWeight(.bold)
                             .multilineTextAlignment(.leading)
-                            .lineLimit(2)                  // ✅ wrap up to 2 lines
-                            .truncationMode(.tail)         // ✅ truncate if still too long
+                            .lineLimit(2)                  
+                            .truncationMode(.tail)
                             .fixedSize(horizontal: false, vertical: true)
-                            .layoutPriority(1)             // ✅ text gets space first
+                            .layoutPriority(1)
                         
                         Spacer()
                         
