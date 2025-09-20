@@ -40,12 +40,15 @@ struct DetailsView: View {
                     }
                     
                     // MARK: - Country Name & Favorite
-                    HStack {
+                    HStack(alignment: .top, spacing: 12) {
                         Text(country.name)
-                            .font(.largeTitle)
+                            .font(.title)
                             .fontWeight(.bold)
-                            .lineLimit(2)
                             .multilineTextAlignment(.leading)
+                            .lineLimit(2)                  // ✅ wrap up to 2 lines
+                            .truncationMode(.tail)         // ✅ truncate if still too long
+                            .fixedSize(horizontal: false, vertical: true)
+                            .layoutPriority(1)             // ✅ text gets space first
                         
                         Spacer()
                         
@@ -55,12 +58,14 @@ struct DetailsView: View {
                             Image(systemName: favourites.contains(country) ? "heart.fill" : "heart")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 30, height: 30)
+                                .frame(width: 28, height: 28)
                                 .foregroundColor(.red)
                         }
                         .buttonStyle(.plain)
                     }
-                    
+
+
+                    // MARK: - Info Rows
                     VStack(spacing: 8) {
                         if let capital = details.capital {
                             infoRow(label: "Capital", value: capital)
@@ -82,6 +87,7 @@ struct DetailsView: View {
                     }
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading) // keep everything left-aligned
             .padding()
         }
         .navigationTitle("Details")
@@ -110,3 +116,4 @@ struct DetailsView: View {
         .frame(maxWidth: .infinity)
     }
 }
+
