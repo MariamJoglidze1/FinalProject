@@ -160,25 +160,21 @@
         }
       }
     },
-    "Loading details…" : {
-      "extractionState" : "stale",
+    "loading_details" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Loading details…"
+            "value" : "Loading details"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cargando detalles…"
+            "value" : "Cargando detalles"
           }
         }
       }
-    },
-    "loading_details" : {
-
     },
     "population" : {
       "extractionState" : "manual",

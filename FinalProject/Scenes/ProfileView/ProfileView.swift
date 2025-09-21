@@ -41,11 +41,11 @@ struct ProfileView: View {
     
     private func ProfileNameView(name: String, description: String) -> some View {
         VStack(spacing: 5) {
-            Text(name) // dynamic, not localized
+            Text(name)
                 .font(.title)
                 .fontWeight(.bold)
             
-            Text(description) // dynamic, not localized
+            Text(description)
                 .font(.subheadline)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
