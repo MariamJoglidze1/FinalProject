@@ -17,10 +17,10 @@ struct DetailsView: View {
                 
                 // MARK: - Loading & Error
                 if viewModel.isLoading {
-                    ProgressView("Loading details…")
+                    ProgressView(LocalizedStringKey("loading_details"))
                         .frame(maxWidth: .infinity, alignment: .center)
                 } else if let error = viewModel.errorMessage {
-                    ErrorView(message: error) {
+                    ErrorView(message: LocalizedStringKey(error)) {
                         Task { await viewModel.load(for: country.wikiDataId) }
                     }
                 } else if let details = viewModel.details {
@@ -45,7 +45,7 @@ struct DetailsView: View {
                             .font(.title)
                             .fontWeight(.bold)
                             .multilineTextAlignment(.leading)
-                            .lineLimit(2)                  
+                            .lineLimit(2)
                             .truncationMode(.tail)
                             .fixedSize(horizontal: false, vertical: true)
                             .layoutPriority(1)
@@ -62,19 +62,19 @@ struct DetailsView: View {
                                 .foregroundColor(.red)
                         }
                         .buttonStyle(.plain)
+                        .accessibilityLabel(favourites.contains(country) ? LocalizedStringKey("unfavourite") : LocalizedStringKey("favourite"))
                     }
-
-
+                    
                     // MARK: - Info Rows
                     VStack(spacing: 8) {
                         if let capital = details.capital {
-                            infoRow(label: "Capital", value: capital)
+                            infoRow(label: LocalizedStringKey("capital"), value: capital)
                         }
                         if let population = viewModel.populationText {
-                            infoRow(label: "Population", value: population)
+                            infoRow(label: LocalizedStringKey("population"), value: population)
                         }
                         if let continent = details.continent {
-                            infoRow(label: "Continent", value: continent)
+                            infoRow(label: LocalizedStringKey("continent"), value: continent)
                         }
                     }
                     .padding(.top, 8)
@@ -87,10 +87,10 @@ struct DetailsView: View {
                     }
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading) // keep everything left-aligned
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
         }
-        .navigationTitle("Details")
+        .navigationTitle(LocalizedStringKey("details_title"))
         .task {
             await viewModel.load(for: country.wikiDataId)
         }
@@ -106,9 +106,9 @@ struct DetailsView: View {
     }
     
     @ViewBuilder
-    private func infoRow(label: String, value: String) -> some View {
+    private func infoRow(label: LocalizedStringKey, value: String) -> some View {
         HStack {
-            Text("\(label):")
+            Text(label)
                 .fontWeight(.semibold)
             Spacer()
             Text(value)
@@ -116,4 +116,3 @@ struct DetailsView: View {
         .frame(maxWidth: .infinity)
     }
 }
-

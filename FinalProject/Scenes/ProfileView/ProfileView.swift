@@ -16,7 +16,7 @@ struct ProfileView: View {
             .padding(.horizontal)
             .padding(.top, 40)
         }
-        .navigationTitle("Profile")
+        .navigationTitle(LocalizedStringKey("profile_title"))
     }
     
     private func profileImageView(name: String) -> some View {
@@ -31,7 +31,7 @@ struct ProfileView: View {
     
     private func AboutMeSection(text: String) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("About Me")
+            Text(LocalizedStringKey("about_me_title"))
                 .font(.headline)
             
             Text(text)
@@ -41,11 +41,11 @@ struct ProfileView: View {
     
     private func ProfileNameView(name: String, description: String) -> some View {
         VStack(spacing: 5) {
-            Text(name)
+            Text(name) // dynamic, not localized
                 .font(.title)
                 .fontWeight(.bold)
             
-            Text(description)
+            Text(description) // dynamic, not localized
                 .font(.subheadline)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
@@ -54,7 +54,7 @@ struct ProfileView: View {
     
     private func SocialLinksSection(links: [SocialLink])-> some View {
         VStack(spacing: 15) {
-            Text("Connect with me")
+            Text(LocalizedStringKey("connect_with_me"))
                 .font(.headline)
             
             HStack(spacing: 30) {
@@ -75,13 +75,3 @@ struct ProfileView: View {
         .padding(.bottom, 40)
     }
 }
-
-struct ProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            ProfileView(profile: .mock)
-        }
-    }
-}
-
-

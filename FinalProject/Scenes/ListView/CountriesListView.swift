@@ -13,7 +13,7 @@ struct CountriesListView: View {
                 if let error = viewModel.errorMessage,
                    !viewModel.isLoading,
                    viewModel.countries.isEmpty {
-                    ErrorView(message: error) {
+                    ErrorView(message: LocalizedStringKey("error_message")) {
                         Task { await viewModel.retry() }
                     }
                 }
@@ -29,7 +29,7 @@ struct CountriesListView: View {
                         if let error = viewModel.errorMessage,
                            !viewModel.isLoading,
                            !viewModel.countries.isEmpty {
-                            ErrorView(message: error) {
+                            ErrorView(message: LocalizedStringKey("error_message")) {
                                 Task { await viewModel.retry() }
                             }
                         }
@@ -44,7 +44,7 @@ struct CountriesListView: View {
                     }
                 }
             }
-            .navigationTitle("Countries")
+            .navigationTitle(LocalizedStringKey("countries_title"))
             .task {
                 if viewModel.countries.isEmpty {
                     await viewModel.fetchCountries()
@@ -64,60 +64,61 @@ struct CountriesListView: View {
     }
 }
     
-    struct CountryRow: View {
-        let country: Country
-        @Environment(Favourites.self) private var favourites
-        
-        var body: some View {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(country.name)
-                        .font(.headline)
-                    
-                    Text("Currencies: \(country.currencyCodes.joined(separator: ", "))")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
+struct CountryRow: View {
+    let country: Country
+    @Environment(Favourites.self) private var favourites
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(country.name)
+                    .font(.headline)
                 
-                Spacer()
-                
-                Button {
-                    if favourites.contains(country) {
-                        favourites.remove(country)
-                    } else {
-                        favourites.add(country)
-                    }
-                } label: {
-                    Image(systemName: favourites.contains(country) ? "heart.fill" : "heart")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 24, height: 24)
-                        .foregroundColor(.red)
-                }
-                .buttonStyle(.plain)
-                .padding()
+                Text(LocalizedStringKey("currencies_prefix")) + Text(" \(country.currencyCodes.joined(separator: ", "))")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+
             }
-        }
-    }
-    
-    
-    struct ErrorView: View {
-        let message: String
-        let retryAction: () -> Void
-        
-        var body: some View {
-            VStack(spacing: 16) {
-                Text(message)
+            
+            Spacer()
+            
+            Button {
+                if favourites.contains(country) {
+                    favourites.remove(country)
+                } else {
+                    favourites.add(country)
+                }
+            } label: {
+                Image(systemName: favourites.contains(country) ? "heart.fill" : "heart")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 24, height: 24)
                     .foregroundColor(.red)
-                    .multilineTextAlignment(.center)
-                
-                Button("Retry", action: retryAction)
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 10)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
             }
+            .buttonStyle(.plain)
             .padding()
         }
     }
+}
+    
+    
+struct ErrorView: View {
+    let message: LocalizedStringKey
+    let retryAction: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            Text(message)
+                .foregroundColor(.red)
+                .multilineTextAlignment(.center)
+            
+            Button(LocalizedStringKey("retry_button"), action: retryAction)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 10)
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(8)
+        }
+        .padding()
+    }
+}
