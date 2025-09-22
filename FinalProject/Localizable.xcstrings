@@ -267,6 +267,75 @@
         }
       }
     },
+    "profile_about" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I’m a passionate iOS developer, who loves working on applications and bringing visuals to life through code. Constantly looking for new things and improving skills. Spending my free time relaxing in nature and at the gym."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soy una desarrolladora iOS apasionada, que disfruta trabajando en aplicaciones y dando vida a los elementos visuales mediante código. Siempre busco aprender cosas nuevas y mejorar mis habilidades. Paso mi tiempo libre relajándome en la naturaleza y en el gimnasio."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저는 애플리케이션 개발과 코드를 통해 시각적 경험을 구현하는 것을 좋아하는 열정적인 iOS 개발자입니다. 항상 새로운 것을 배우고 기술을 향상시키는 것을 추구합니다. 여가 시간에는 자연 속에서 휴식을 취하거나 헬스장에서 운동을 즐깁니다."
+          }
+        }
+      }
+    },
+    "profile_description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS Developer • Tech Enthusiast • Gym Lover"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desarrolladora iOS • Entusiasta de la tecnología • Amante del gimnasio"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS 개발자 • 기술 애호가 • 헬스 매니아"
+          }
+        }
+      }
+    },
+    "profile_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mariam Joglidze"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mariam Joglidze"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "마리암 조글리제"
+          }
+        }
+      }
+    },
     "profile_title" : {
       "extractionState" : "manual",
       "localizations" : {
