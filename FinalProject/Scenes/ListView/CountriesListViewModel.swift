@@ -44,7 +44,6 @@ final class CountriesViewModel {
             
             if let nextLink = response.links.first(where: { $0.rel == "next" }) {
                 var href = nextLink.href
-                // Ensure languageCode always included
                 if !href.contains("languageCode") {
                     href += (href.contains("?") ? "&" : "?") + "languageCode=\(Locale.currentLanguageCode)"
                 }

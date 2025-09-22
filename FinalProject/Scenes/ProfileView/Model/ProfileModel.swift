@@ -13,4 +13,3 @@ struct SocialLink: Identifiable {
     let systemImage: String
     let color: Color
 }
-

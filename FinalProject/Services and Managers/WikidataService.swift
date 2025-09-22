@@ -88,16 +88,13 @@ struct WikidataService: WikidataServiceProtocol {
             throw URLError(.cannotParseResponse)
         }
         
-        // Use the shared Locale extension
         let currentLang = Locale.currentLanguageCode
         
-        // Try localized label first
         if let localized = labels[currentLang] as? [String: Any],
            let value = localized["value"] as? String {
             return value
         }
         
-        // Fallback to English
         if let en = labels["en"] as? [String: Any],
            let value = en["value"] as? String {
             return value
