@@ -1,5 +1,16 @@
 import SwiftUI
 
+// MARK: - Locale extension
+extension Locale {
+    static var currentLanguageCode: String {
+        if #available(iOS 16, *) {
+            return Locale.current.language.languageCode?.identifier ?? "en"
+        } else {
+            return Locale.current.languageCode ?? "en"
+        }
+    }
+}
+
 @MainActor
 @Observable
 final class CountriesViewModel {
@@ -7,7 +18,12 @@ final class CountriesViewModel {
     private(set) var isLoading = false
     private(set) var errorMessage: String?
     
-    private var nextPageURL: String? = "https://wft-geo-db.p.rapidapi.com/v1/geo/countries?limit=10"
+    // Initial URL with dynamic languageCode
+    private var nextPageURL: String? = {
+        let code = Locale.currentLanguageCode
+        return "https://wft-geo-db.p.rapidapi.com/v1/geo/countries?limit=10&languageCode=\(code)"
+    }()
+    
     private let service: CountriesServiceProtocol
     
     init(service: CountriesServiceProtocol = CountriesService()) {
@@ -28,20 +44,23 @@ final class CountriesViewModel {
         await fetchCountries()
     }
     
-    
     // MARK: - Networking
     private func fetchPage(urlString: String?) async {
         guard !isLoading else { return }
         isLoading = true
         errorMessage = nil
         
-        
         do {
             let response = try await service.fetchPage(urlString: urlString)
             countries.append(contentsOf: response.data)
             
             if let nextLink = response.links.first(where: { $0.rel == "next" }) {
-                nextPageURL = nextLink.href.hasPrefix("http") ? nextLink.href : "https://wft-geo-db.p.rapidapi.com" + nextLink.href
+                var href = nextLink.href
+                // ensure languageCode always included
+                if !href.contains("languageCode") {
+                    href += (href.contains("?") ? "&" : "?") + "languageCode=\(Locale.currentLanguageCode)"
+                }
+                nextPageURL = href.hasPrefix("http") ? href : "https://wft-geo-db.p.rapidapi.com" + href
             } else {
                 nextPageURL = nil
             }
@@ -52,3 +71,4 @@ final class CountriesViewModel {
         isLoading = false
     }
 }
+

@@ -1,8 +1,15 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    " %@" : {
-
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
     },
     "about_me_title" : {
       "extractionState" : "manual",
@@ -189,7 +196,8 @@
             "value" : "오류가 발생했습니다. 다시 시도해 주세요."
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "favourite" : {
       "extractionState" : "manual",
@@ -283,7 +291,26 @@
       }
     },
     "retry_button" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다시 해 보다"
+          }
+        }
+      }
     },
     "retry_button\"" : {
       "extractionState" : "manual",
@@ -306,7 +333,8 @@
             "value" : "재시도"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "unfavourite" : {
       "extractionState" : "manual",

@@ -13,7 +13,7 @@ struct CountriesListView: View {
                 if let error = viewModel.errorMessage,
                    !viewModel.isLoading,
                    viewModel.countries.isEmpty {
-                    ErrorView(message: LocalizedStringKey("error_message")) {
+                    ErrorView(message: LocalizedStringKey(error)) {
                         Task { await viewModel.retry() }
                     }
                 }
@@ -29,7 +29,7 @@ struct CountriesListView: View {
                         if let error = viewModel.errorMessage,
                            !viewModel.isLoading,
                            !viewModel.countries.isEmpty {
-                            ErrorView(message: LocalizedStringKey("error_message")) {
+                            ErrorView(message: LocalizedStringKey(error)) {
                                 Task { await viewModel.retry() }
                             }
                         }
@@ -67,17 +67,22 @@ struct CountriesListView: View {
 struct CountryRow: View {
     let country: Country
     @Environment(Favourites.self) private var favourites
-    
+
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
+                // Country name from API (already localized)
                 Text(country.name)
                     .font(.headline)
                 
-                Text(LocalizedStringKey("currencies_prefix")) + Text(" \(country.currencyCodes.joined(separator: ", "))")
+                // Currency names localized dynamically
+                let localizedCurrencies = country.currencyCodes
+                    .compactMap { Locale.current.localizedString(forCurrencyCode: $0) }
+                    .joined(separator: ", ")
+                
+                Text("\(NSLocalizedString("currencies_prefix", comment: "")) \(localizedCurrencies)")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
-
             }
             
             Spacer()
@@ -100,7 +105,6 @@ struct CountryRow: View {
         }
     }
 }
-    
     
 struct ErrorView: View {
     let message: LocalizedStringKey
