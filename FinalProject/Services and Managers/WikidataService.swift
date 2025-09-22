@@ -82,13 +82,27 @@ struct WikidataService: WikidataServiceProtocol {
         let (data, _) = try await URLSession.shared.data(from: url)
         let json = try JSONSerialization.jsonObject(with: data) as! [String: Any]
         
-        if let entities = json["entities"] as? [String: Any],
-           let entity = entities[entityId] as? [String: Any],
-           let labels = entity["labels"] as? [String: Any],
-           let en = labels["en"] as? [String: Any],
+        guard let entities = json["entities"] as? [String: Any],
+              let entity = entities[entityId] as? [String: Any],
+              let labels = entity["labels"] as? [String: Any] else {
+            throw URLError(.cannotParseResponse)
+        }
+        
+        // Detect app’s current language
+        let currentLang = Locale.current.language.languageCode?.identifier ?? "en"
+        
+        // 1st: Try localized label
+        if let localized = labels[currentLang] as? [String: Any],
+           let value = localized["value"] as? String {
+            return value
+        }
+        
+        // 2nd: Fallback to English
+        if let en = labels["en"] as? [String: Any],
            let value = en["value"] as? String {
             return value
         }
+        
         throw URLError(.cannotParseResponse)
     }
 }
