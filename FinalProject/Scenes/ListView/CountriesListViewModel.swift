@@ -1,16 +1,5 @@
 import SwiftUI
 
-// MARK: - Locale extension
-extension Locale {
-    static var currentLanguageCode: String {
-        if #available(iOS 16, *) {
-            return Locale.current.language.languageCode?.identifier ?? "en"
-        } else {
-            return Locale.current.languageCode ?? "en"
-        }
-    }
-}
-
 @MainActor
 @Observable
 final class CountriesViewModel {
@@ -18,7 +7,6 @@ final class CountriesViewModel {
     private(set) var isLoading = false
     private(set) var errorMessage: String?
     
-    // Initial URL with dynamic languageCode
     private var nextPageURL: String? = {
         let code = Locale.currentLanguageCode
         return "https://wft-geo-db.p.rapidapi.com/v1/geo/countries?limit=10&languageCode=\(code)"
@@ -56,7 +44,7 @@ final class CountriesViewModel {
             
             if let nextLink = response.links.first(where: { $0.rel == "next" }) {
                 var href = nextLink.href
-                // ensure languageCode always included
+                // Ensure languageCode always included
                 if !href.contains("languageCode") {
                     href += (href.contains("?") ? "&" : "?") + "languageCode=\(Locale.currentLanguageCode)"
                 }
@@ -71,4 +59,3 @@ final class CountriesViewModel {
         isLoading = false
     }
 }
-

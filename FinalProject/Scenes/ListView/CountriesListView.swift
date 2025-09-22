@@ -63,19 +63,17 @@ struct CountriesListView: View {
         }
     }
 }
-    
+
 struct CountryRow: View {
     let country: Country
     @Environment(Favourites.self) private var favourites
-
+    
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
-                // Country name from API (already localized)
                 Text(country.name)
                     .font(.headline)
                 
-                // Currency names localized dynamically
                 let localizedCurrencies = country.currencyCodes
                     .compactMap { Locale.current.localizedString(forCurrencyCode: $0) }
                     .joined(separator: ", ")
@@ -105,7 +103,7 @@ struct CountryRow: View {
         }
     }
 }
-    
+
 struct ErrorView: View {
     let message: LocalizedStringKey
     let retryAction: () -> Void

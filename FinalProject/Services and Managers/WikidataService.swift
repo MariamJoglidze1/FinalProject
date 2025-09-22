@@ -45,9 +45,9 @@ struct WikidataService: WikidataServiceProtocol {
                let datavalue = mainsnak["datavalue"] as? [String: Any],
                let amount = datavalue["value"] as? [String: Any],
                let populationValue = amount["amount"] as? String {
-               let cleaned = populationValue.replacingOccurrences(of: "+", with: "")
-               details.population = Int(cleaned)
-
+                let cleaned = populationValue.replacingOccurrences(of: "+", with: "")
+                details.population = Int(cleaned)
+                
             }
             
             // Coordinates
@@ -88,16 +88,16 @@ struct WikidataService: WikidataServiceProtocol {
             throw URLError(.cannotParseResponse)
         }
         
-        // Detect app’s current language
-        let currentLang = Locale.current.language.languageCode?.identifier ?? "en"
+        // Use the shared Locale extension
+        let currentLang = Locale.currentLanguageCode
         
-        // 1st: Try localized label
+        // Try localized label first
         if let localized = labels[currentLang] as? [String: Any],
            let value = localized["value"] as? String {
             return value
         }
         
-        // 2nd: Fallback to English
+        // Fallback to English
         if let en = labels["en"] as? [String: Any],
            let value = en["value"] as? String {
             return value
