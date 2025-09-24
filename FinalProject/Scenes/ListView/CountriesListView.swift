@@ -54,6 +54,7 @@ struct CountriesListView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
                         ProfileView(profile: .mock)
+                            .force(orientation: .all)
                     } label: {
                         Image(systemName: "person.crop.circle")
                             .font(.title2)
