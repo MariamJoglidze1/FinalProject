@@ -11,6 +11,11 @@ struct CountriesService: CountriesServiceProtocol {
         "x-rapidapi-key": "af89b7b859msh76f4aa94196b1c7p16ea9djsnb51a2f8c0353",
         "x-rapidapi-host": "wft-geo-db.p.rapidapi.com"
     ]
+    private let session: URLSession
+    
+    init(session: URLSession = .shared) {
+        self.session = session
+    }
     
     func fetchPage(urlString: String?) async throws -> CountriesResponse {
         guard let urlString, let url = URL(string: urlString) else {
