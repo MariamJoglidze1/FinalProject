@@ -1,49 +1,39 @@
 import SwiftUI
 
 struct CountriesListView: View {
+    
     private var viewModel: CountriesViewModel
     
+    @State private var navigationPath = NavigationPath()
+    
     init() {
-        viewModel = CountriesViewModel()
+        viewModel = CountriesViewModel(service: CountriesService())
     }
     
     var body: some View {
-        NavigationStack {
-            Group {
-                if let error = viewModel.errorMessage,
-                   !viewModel.isLoading,
-                   viewModel.countries.isEmpty {
-                    ErrorView(message: LocalizedStringKey(error)) {
-                        Task { await viewModel.retry() }
-                    }
-                } else {
-                    List {
-                        ForEach(viewModel.countries) { country in
-                            NavigationLink(destination: DetailsView(country: country)) {
-                                CountryRow(country: country)
-                            }
-                            .task { await viewModel.loadMoreIfNeeded(current: country) }
+        NavigationStack(path: $navigationPath) {
+            List {
+                ForEach(viewModel.countries) { country in
+                    countryRow(for: country)
+                        .makeWholeViewTapable()
+                        .onTapGesture {
+                            navigationPath.append(country)
                         }
-                        
-                        if let error = viewModel.errorMessage,
-                           !viewModel.isLoading,
-                           !viewModel.countries.isEmpty {
-                            ErrorView(message: LocalizedStringKey(error)) {
-                                Task { await viewModel.retry() }
-                            }
-                        }
-                        
-                        if viewModel.isLoading {
-                            HStack {
-                                Spacer()
-                                ProgressView()
-                                Spacer()
-                            }
-                        }
-                    }
+                        .task { await viewModel.loadMoreIfNeeded(current: country) }
                 }
             }
             .navigationTitle(LocalizedStringKey("countries_title"))
+            .progressView(isShowing: viewModel.isLoading)
+            .alert(parameters: viewModel.alertParameters)
+            .navigationDestination(
+                for: Country.self,
+                destination: { country in
+                    CountryDetailsView(country: country)
+                }
+            )
+            .refreshable {
+                Task { await viewModel.retry() }
+            }
             .task {
                 if viewModel.countries.isEmpty {
                     await viewModel.fetchCountries()
@@ -62,13 +52,8 @@ struct CountriesListView: View {
             }
         }
     }
-}
-
-struct CountryRow: View {
-    let country: Country
-    @Environment(FavouritesManager.self) private var favourites
     
-    var body: some View {
+    private func countryRow(for country: Country) -> some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
                 Text(country.name)
@@ -85,42 +70,21 @@ struct CountryRow: View {
             
             Spacer()
             
-            Button {
-                if favourites.contains(country) {
-                    favourites.remove(country)
-                } else {
-                    favourites.add(country)
-                }
-            } label: {
-                Image(systemName: favourites.contains(country) ? "heart.fill" : "heart")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 24, height: 24)
-                    .foregroundColor(.red)
-            }
-            .buttonStyle(.plain)
-            .padding()
+            favouriteButton(with: country)
         }
     }
-}
-
-struct ErrorView: View {
-    let message: LocalizedStringKey
-    let retryAction: () -> Void
     
-    var body: some View {
-        VStack(spacing: 16) {
-            Text(message)
+    private func favouriteButton(with country: Country)-> some View {
+        Button {
+            viewModel.favouriteButtonDidTap(country: country)
+        } label: {
+            Image(systemName: FavouritesManager.shared.contains(country) ? "heart.fill" : "heart")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 24, height: 24)
                 .foregroundColor(.red)
-                .multilineTextAlignment(.center)
-            
-            Button(LocalizedStringKey("retry_button"), action: retryAction)
-                .padding(.horizontal, 20)
-                .padding(.vertical, 10)
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(8)
         }
+        .buttonStyle(.plain)
         .padding()
     }
 }

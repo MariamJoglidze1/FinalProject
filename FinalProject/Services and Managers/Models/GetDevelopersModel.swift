@@ -1,6 +1,6 @@
 import Foundation
 
-struct Country: Codable, Identifiable, Equatable {
+struct Country: Hashable, Codable, Identifiable, Equatable {
     let code: String
     let currencyCodes: [String]
     let name: String

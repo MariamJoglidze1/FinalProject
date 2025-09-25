@@ -5,7 +5,14 @@ import SwiftUI
 final class CountriesViewModel {
     private(set) var countries: [Country] = []
     private(set) var isLoading = false
-    private(set) var errorMessage: String?
+    private var errorMessage: AlertParameters?
+    
+    var alertParameters: Binding<AlertParameters?> {
+        Binding(
+            get: { self.errorMessage },
+            set: { self.errorMessage = $0 }
+        )
+    }
     
     private var nextPageURL: String? = {
         let code = Locale.currentLanguageCode
@@ -14,12 +21,14 @@ final class CountriesViewModel {
     
     private let service: CountriesServiceProtocol
     
-    init(service: CountriesServiceProtocol = CountriesService()) {
+    init(
+        service: CountriesServiceProtocol
+    ) {
         self.service = service
     }
     
     func fetchCountries() async {
-        await fetchPage(urlString: nextPageURL)
+        await fetchCountries(urlString: nextPageURL)
     }
     
     func retry() async {
@@ -29,11 +38,21 @@ final class CountriesViewModel {
     func loadMoreIfNeeded(current country: Country) async {
         guard let index = countries.firstIndex(of: country),
               index >= countries.count - 2 else { return }
+        
         await fetchCountries()
     }
     
+    //MARK: Actions
+    func favouriteButtonDidTap(country: Country) {
+        if FavouritesManager.shared.contains(country) {
+            FavouritesManager.shared.remove(country)
+        } else {
+            FavouritesManager.shared.add(country)
+        }
+    }
+    
     // MARK: - Networking
-    private func fetchPage(urlString: String?) async {
+    private func fetchCountries(urlString: String?) async {
         guard !isLoading else { return }
         isLoading = true
         errorMessage = nil
@@ -52,7 +71,14 @@ final class CountriesViewModel {
                 nextPageURL = nil
             }
         } catch {
-            errorMessage = "Error: \(error.localizedDescription)"
+            errorMessage = .init(
+                message: "Error: \(error.localizedDescription)",
+                actionTitle: "Retry", // TODO: Localization
+                action: { [weak self] in
+                    Task {
+                        await self?.fetchCountries()
+                    }
+                })
         }
         
         isLoading = false

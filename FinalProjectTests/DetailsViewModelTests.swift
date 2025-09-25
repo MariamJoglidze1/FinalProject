@@ -25,7 +25,7 @@ struct DetailsViewModelTests {
             longitude: 44.8
         )
         
-        let viewModel = DetailsViewModel(service: mockService, country: sampleCountry)
+        let viewModel = CountryDetailsViewModel(service: mockService, country: sampleCountry)
         
         await viewModel.load(for: "Q230")
         
@@ -42,7 +42,7 @@ struct DetailsViewModelTests {
         var mockService = MockWikidataService()
         mockService.shouldThrow = true
         
-        let viewModel = DetailsViewModel(service: mockService, country: sampleCountry)
+        let viewModel = CountryDetailsViewModel(service: mockService, country: sampleCountry)
         
         await viewModel.load(for: "Q230")
         
@@ -54,7 +54,7 @@ struct DetailsViewModelTests {
     @Test @MainActor
     func testIsLoadingState() async throws {
         let mockService = MockWikidataService()
-        let viewModel = DetailsViewModel(service: mockService, country: sampleCountry)
+        let viewModel = CountryDetailsViewModel(service: mockService, country: sampleCountry)
 
         let task = Task {
             #expect(viewModel.isLoading == false)

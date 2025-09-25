@@ -1,7 +1,7 @@
 import SwiftUI
 import MapKit
 
-struct CountryMapView: View {
+struct MapView: View {
     let coordinate: CLLocationCoordinate2D
     
     @State private var position: MapCameraPosition

@@ -15,7 +15,7 @@ struct DetailsViewTests {
             longitude: 44.8271
         )
         let dummyCountry = Country(code: "GE", currencyCodes: ["GEL"], name: "Georgia", wikiDataId: "Q230")
-        let view = DetailsView(country: dummyCountry)
+        let view = CountryDetailsView(country: dummyCountry)
         
         let coordinate = view.mapCoordinate(from: details)
         
@@ -33,7 +33,7 @@ struct DetailsViewTests {
             longitude: nil
         )
         let dummyCountry = Country(code: "GE", currencyCodes: ["GEL"], name: "Georgia", wikiDataId: "Q230")
-        let view = DetailsView(country: dummyCountry)
+        let view = CountryDetailsView(country: dummyCountry)
         
         let coordinate = view.mapCoordinate(from: details)
         
