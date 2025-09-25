@@ -8,17 +8,22 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                 UIApplication.shared.connectedScenes.forEach { scene in
                     if let windowScene = scene as? UIWindowScene {
                         windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: orientationLock))
+                        
+                        if let rootVC = windowScene.windows.first?.rootViewController {
+                            rootVC.setNeedsUpdateOfSupportedInterfaceOrientations()
+                        }
                     }
                 }
-                UIViewController.attemptRotationToDeviceOrientation()
             } else {
                 let orientation: UIInterfaceOrientation = orientationLock == .portrait ? .portrait : .landscapeRight
                 UIDevice.current.setValue(orientation.rawValue, forKey: "orientation")
+                UIViewController.attemptRotationToDeviceOrientation()
             }
         }
     }
-
-    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+    
+    func application(_ application: UIApplication,
+                     supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return AppDelegate.orientationLock
     }
 }
