@@ -15,7 +15,7 @@ struct LocaleManagerTests {
     
     @Test func testInitializationWithSavedLanguage() {
         let defaults = UserDefaults.standard
-        defaults.removeObject(forKey: "AppLanguage")  // Reset before test
+        defaults.removeObject(forKey: "AppLanguage") 
         defaults.set("fr", forKey: "AppLanguage")
         
         let manager = LocaleManager()
