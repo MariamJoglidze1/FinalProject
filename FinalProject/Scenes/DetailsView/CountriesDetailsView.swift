@@ -113,12 +113,14 @@ struct DetailsView: View {
         }
         .frame(maxWidth: .infinity)
     }
-}
-
-func mapCoordinate(from details: CountryDetails?) -> CLLocationCoordinate2D? {
-    guard let lat = details?.latitude,
-          let lon = details?.longitude else {
-        return nil
+    
+    
+    func mapCoordinate(from details: CountryDetails?) -> CLLocationCoordinate2D? {
+        guard let lat = details?.latitude,
+              let lon = details?.longitude else {
+            return nil
+        }
+        return CLLocationCoordinate2D(latitude: lat, longitude: lon)
     }
-    return CLLocationCoordinate2D(latitude: lat, longitude: lon)
+    
 }
