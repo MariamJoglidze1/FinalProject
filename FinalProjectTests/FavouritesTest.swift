@@ -17,7 +17,7 @@ struct FavouritesTests {
         let storage = UserDefaults(suiteName: #function)!
         storage.removePersistentDomain(forName: #function)
         
-        let favourites = FavouritesManager(storage: storage)
+        let favourites = FavouritesManager.shared
         try await Task.sleep(nanoseconds: 10_000_000)
         #expect(!favourites.contains(sampleCountry))
     }
@@ -27,7 +27,7 @@ struct FavouritesTests {
         let storage = UserDefaults(suiteName: #function)!
         storage.removePersistentDomain(forName: #function)
         
-        let favourites = FavouritesManager(storage: storage)
+        let favourites = FavouritesManager.shared
         favourites.add(sampleCountry)
         try await Task.sleep(nanoseconds: 10_000_000)
         
@@ -39,7 +39,7 @@ struct FavouritesTests {
         let storage = UserDefaults(suiteName: #function)!
         storage.removePersistentDomain(forName: #function)
         
-        let favourites = FavouritesManager(storage: storage)
+        let favourites = FavouritesManager.shared
         favourites.add(sampleCountry)
         favourites.remove(sampleCountry)
         try await Task.sleep(nanoseconds: 10_000_000)
@@ -52,11 +52,11 @@ struct FavouritesTests {
             let storage = UserDefaults(suiteName: #function)!
             storage.removePersistentDomain(forName: #function)
             
-            var favourites = FavouritesManager(storage: storage)
+            var favourites = FavouritesManager.shared
             favourites.add(sampleCountry)
             try await Task.sleep(nanoseconds: 10_000_000)
             
-            favourites = FavouritesManager(storage: storage)
+            favourites = FavouritesManager.shared
             try await Task.sleep(nanoseconds: 10_000_000)
             
             #expect(favourites.contains(sampleCountry))

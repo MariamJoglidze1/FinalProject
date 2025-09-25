@@ -15,9 +15,10 @@ struct DetailsViewTests {
             longitude: 44.8271
         )
         let dummyCountry = Country(code: "GE", currencyCodes: ["GEL"], name: "Georgia", wikiDataId: "Q230")
-        let view = CountryDetailsView(country: dummyCountry)
+        let viewModel = CountryDetailsViewModel(country: dummyCountry)
+        let view = CountryDetailsView(viewModel: viewModel)
         
-        let coordinate = view.mapCoordinate(from: details)
+        let coordinate = viewModel.mapCoordinate()
         
         #expect(coordinate?.latitude == 41.7151)
         #expect(coordinate?.longitude == 44.8271)
@@ -33,9 +34,9 @@ struct DetailsViewTests {
             longitude: nil
         )
         let dummyCountry = Country(code: "GE", currencyCodes: ["GEL"], name: "Georgia", wikiDataId: "Q230")
-        let view = CountryDetailsView(country: dummyCountry)
+        let viewModel = CountryDetailsViewModel(country: dummyCountry)
         
-        let coordinate = view.mapCoordinate(from: details)
+        let coordinate = viewModel.mapCoordinate()
         
         #expect(coordinate == nil)
     }

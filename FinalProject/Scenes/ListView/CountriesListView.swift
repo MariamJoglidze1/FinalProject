@@ -28,7 +28,7 @@ struct CountriesListView: View {
             .navigationDestination(
                 for: Country.self,
                 destination: { country in
-                    CountryDetailsView(country: country)
+                    CountryDetailsView(viewModel: CountryDetailsViewModel(country: country))
                 }
             )
             .refreshable {

@@ -3,8 +3,10 @@ import SwiftUI
 struct CountryDetailsView: View {
     private var viewModel: CountryDetailsViewModel
     
-    init(country: Country) {
-        viewModel = CountryDetailsViewModel(country: country)
+    init(
+        viewModel: CountryDetailsViewModel
+    ) {
+        self.viewModel = viewModel
     }
     
     var body: some View {

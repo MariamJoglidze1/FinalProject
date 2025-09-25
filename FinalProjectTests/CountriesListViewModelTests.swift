@@ -1,16 +1,17 @@
 import Testing
 import Foundation
 @testable import FinalProject
+internal import SwiftUI
 @MainActor
 
-struct CountriesViewModelTests {
+struct CountriesListViewModelTests {
     @Test
     func initialState_isEmpty() async throws {
         let vm = CountriesViewModel(service: MockCountriesService())
         
         #expect(vm.countries.isEmpty)
         #expect(vm.isLoading == false)
-        #expect(vm.errorMessage == nil)
+        #expect(vm.alertParameters.wrappedValue == nil)
     }
     
     @Test
@@ -27,7 +28,7 @@ struct CountriesViewModelTests {
         
         #expect(vm.countries.count == 1)
         #expect(vm.countries.first?.name == "Georgia")
-        #expect(vm.errorMessage == nil)
+        #expect(vm.alertParameters.wrappedValue == nil)
     }
     
     @Test
@@ -38,7 +39,7 @@ struct CountriesViewModelTests {
         await vm.fetchCountries()
         
         #expect(vm.countries.isEmpty)
-        #expect(vm.errorMessage?.contains("Error:") == true)
+        #expect(vm.alertParameters.wrappedValue != nil)
     }
     
     @Test

@@ -1,5 +1,5 @@
 import Testing
-import SwiftUI
+internal import SwiftUI
 @testable import FinalProject
 @MainActor
 

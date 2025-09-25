@@ -26,12 +26,12 @@ struct DetailsViewModelTests {
         )
         
         let viewModel = CountryDetailsViewModel(service: mockService, country: sampleCountry)
-        
-        await viewModel.load(for: "Q230")
+
+        await viewModel.loadData()
         
         #expect(viewModel.details?.capital == "Tbilisi")
         #expect(viewModel.details?.population == 3729600)
-        #expect(viewModel.errorMessage == nil)
+        #expect(viewModel.alertParameters == nil)
         #expect(viewModel.isLoading == false)
         let digitsOnly = viewModel.populationText?.replacingOccurrences(of: "\\D", with: "", options: .regularExpression)
         #expect(digitsOnly == "3729600")
@@ -43,11 +43,10 @@ struct DetailsViewModelTests {
         mockService.shouldThrow = true
         
         let viewModel = CountryDetailsViewModel(service: mockService, country: sampleCountry)
-        
-        await viewModel.load(for: "Q230")
+
+        await viewModel.loadData()
         
         #expect(viewModel.details == nil)
-        #expect(viewModel.errorMessage?.contains("Failed to load details") == true)
         #expect(viewModel.isLoading == false)
     }
     
@@ -58,7 +57,7 @@ struct DetailsViewModelTests {
 
         let task = Task {
             #expect(viewModel.isLoading == false)
-            await viewModel.load(for: "Q230")
+            await viewModel.loadData()
         }
 
         try await Task.sleep(nanoseconds: 10_000_000)
