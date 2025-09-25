@@ -6,12 +6,12 @@ import Testing
 // MARK: - Mock Service
 struct MockWikidataService: WikidataServiceProtocol {
     var shouldThrow = false
-    var sampleDetails: CountryDetails?
+    var sampleDetails: CountryDetailsResponse?
     
-    func fetchCountryDetails(for wikiDataId: String) async throws -> CountryDetails {
+    func fetchCountryDetails(for wikiDataId: String) async throws -> CountryDetailsResponse {
         try await Task.sleep(nanoseconds: 100_000_000)
         if shouldThrow { throw URLError(.badServerResponse) }
-        return sampleDetails ?? CountryDetails(
+        return sampleDetails ?? CountryDetailsResponse(
             flagURL: URL(string: "https://example.com/flag.png"),
             capital: "Tbilisi",
             population: 3729600,

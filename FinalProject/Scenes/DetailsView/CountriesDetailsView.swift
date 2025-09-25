@@ -17,19 +17,11 @@ struct CountryDetailsView: View {
                     
                     countryTitleView
                     
-                    // MARK: - Info Rows
-                    VStack(spacing: 8) {
-                        if let capital = details.capital {
-                            infoRow(label: LocalizedStringKey("capital"), value: capital)
-                        }
-                        if let population = viewModel.populationText {
-                            infoRow(label: LocalizedStringKey("population"), value: population)
-                        }
-                        if let continent = details.continent {
-                            infoRow(label: LocalizedStringKey("continent"), value: continent)
+                    LazyVStack(spacing: 8) {
+                        ForEach(viewModel.countryInfoDataSource) { info in
+                            infoRow(label: info.title, value: info.value)
                         }
                     }
-                    .padding(.top, 8)
                     
                     if let coordinate = viewModel.mapCoordinate() {
                         MapView(coordinate: coordinate)

@@ -16,7 +16,7 @@ struct DetailsViewModelTests {
     @Test @MainActor
     func testLoadSuccess() async throws {
         var mockService = MockWikidataService()
-        mockService.sampleDetails = CountryDetails(
+        mockService.sampleDetails = CountryDetailsResponse(
             flagURL: URL(string: "https://example.com/flag.png"),
             capital: "Tbilisi",
             population: 3729600,

@@ -4,7 +4,7 @@ import MapKit
 @MainActor
 @Observable
 final class CountryDetailsViewModel {
-    private(set) var details: CountryDetails?
+    private(set) var details: CountryDetailsResponse?
     private(set) var isLoading = false
     private var errorMessage: AlertParameters?
     
@@ -27,8 +27,31 @@ final class CountryDetailsViewModel {
 }
 
 extension CountryDetailsViewModel {
+    struct CountryInfoModel: Identifiable {
+        let id = UUID()
+        
+        let title: LocalizedStringKey
+        let value: String
+    }
+    
     var populationText: String? {
         details?.population?.formattedWithSeparator
+    }
+    
+    var countryInfoDataSource: [CountryInfoModel] {
+        var items: [CountryInfoModel] = []
+        
+        if let capital = details?.capital {
+            items.append(.init(title: LocalizedStringKey("capital"), value: capital))
+        }
+        if let population = populationText {
+            items.append(.init(title: LocalizedStringKey("population"), value: population))
+        }
+        if let continent = details?.continent {
+            items.append(.init(title: LocalizedStringKey("continent"), value: continent))
+        }
+        
+        return items
     }
     
     func mapCoordinate() -> CLLocationCoordinate2D? {

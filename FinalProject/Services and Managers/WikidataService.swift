@@ -1,12 +1,12 @@
 import Foundation
 
 protocol WikidataServiceProtocol {
-    func fetchCountryDetails(for wikiDataId: String) async throws -> CountryDetails
+    func fetchCountryDetails(for wikiDataId: String) async throws -> CountryDetailsResponse
     func fetchLabel(for entityId: String) async throws -> String
 }
 
 struct WikidataService: WikidataServiceProtocol {
-    func fetchCountryDetails(for wikiDataId: String) async throws -> CountryDetails {
+    func fetchCountryDetails(for wikiDataId: String) async throws -> CountryDetailsResponse {
         guard let url = URL(string: "https://www.wikidata.org/wiki/Special:EntityData/\(wikiDataId).json") else {
             throw URLError(.badURL)
         }
@@ -14,7 +14,7 @@ struct WikidataService: WikidataServiceProtocol {
         let (data, _) = try await URLSession.shared.data(from: url)
         guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else { throw URLError(.badServerResponse) }
         
-        var details = CountryDetails()
+        var details = CountryDetailsResponse()
         
         if let entities = json["entities"] as? [String: Any],
            let entity = entities[wikiDataId] as? [String: Any],

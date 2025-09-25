@@ -6,7 +6,7 @@ import MapKit
 struct DetailsViewTests {
     
     @Test func testMapCoordinateExistsWhenDetailsHaveCoordinates() async throws {
-        let details = CountryDetails(
+        let details = CountryDetailsResponse(
             flagURL: nil,
             capital: "Tbilisi",
             population: 3_700_000,
@@ -24,7 +24,7 @@ struct DetailsViewTests {
     }
     
     @Test func testMapCoordinateIsNilWhenDetailsHaveNoCoordinates() async throws {
-        let details = CountryDetails(
+        let details = CountryDetailsResponse(
             flagURL: nil,
             capital: "Tbilisi",
             population: 3_700_000,

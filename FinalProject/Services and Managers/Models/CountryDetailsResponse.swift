@@ -1,6 +1,6 @@
 import Foundation
 
-struct CountryDetails {
+struct CountryDetailsResponse {
     var flagURL: URL?
     var capital: String?
     var population: Int?
