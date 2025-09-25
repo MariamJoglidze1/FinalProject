@@ -2,8 +2,9 @@ import SwiftUI
 import MapKit
 
 struct DetailsView: View {
+    @Environment(FavouritesManager.self) private var favourites
+    
     private let country: Country
-    @Environment(Favourites.self) private var favourites
     private var viewModel: DetailsViewModel
     
     init(country: Country) {
@@ -122,5 +123,4 @@ struct DetailsView: View {
         }
         return CLLocationCoordinate2D(latitude: lat, longitude: lon)
     }
-    
 }

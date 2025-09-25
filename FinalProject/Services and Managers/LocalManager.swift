@@ -1,7 +1,7 @@
 import SwiftUI
 import Combine
 
-class LocaleManager: ObservableObject {
+final class LocaleManager: ObservableObject {
     @Published var locale: Locale = .current
     
     func setLanguage(_ identifier: String) {

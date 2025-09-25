@@ -1,7 +1,7 @@
 import UIKit
 import SwiftUI
 
-class AppDelegate: NSObject, UIApplicationDelegate {
+final class AppDelegate: NSObject, UIApplicationDelegate {
     static var orientationLock: UIInterfaceOrientationMask = .portrait {
         didSet {
             if #available(iOS 16.0, *) {
@@ -24,6 +24,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     
     func application(_ application: UIApplication,
                      supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        return AppDelegate.orientationLock
+        AppDelegate.orientationLock
     }
 }

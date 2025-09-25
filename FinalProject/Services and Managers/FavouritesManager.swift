@@ -1,11 +1,10 @@
 import SwiftUI
 
 @Observable
-final class Favourites {
+final class FavouritesManager {
     private var countries: Set<String>
     private let key = "Favorites"
     private let storage: UserDefaults
-
     
     init(storage: UserDefaults = .standard) {
         self.storage = storage
@@ -15,7 +14,9 @@ final class Favourites {
             countries = []
         }
     }
-    
+}
+
+extension FavouritesManager {
     func contains(_ country: Country) -> Bool {
         countries.contains(country.id)
     }

@@ -16,8 +16,7 @@ struct CountriesListView: View {
                     ErrorView(message: LocalizedStringKey(error)) {
                         Task { await viewModel.retry() }
                     }
-                }
-                else {
+                } else {
                     List {
                         ForEach(viewModel.countries) { country in
                             NavigationLink(destination: DetailsView(country: country)) {
@@ -67,7 +66,7 @@ struct CountriesListView: View {
 
 struct CountryRow: View {
     let country: Country
-    @Environment(Favourites.self) private var favourites
+    @Environment(FavouritesManager.self) private var favourites
     
     var body: some View {
         HStack {
