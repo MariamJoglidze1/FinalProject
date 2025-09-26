@@ -1,0 +1,40 @@
+# Xcode
+#
+# Compiled executables and build artifacts
+build/
+DerivedData/
+*.xcarchive
+*.xcworkspace
+*.ipa
+*.app
+*.dSYM.zip
+*.dSYM
+
+# User-specific project settings and state
+# Includes: user schemes, breakpoints, UI layout
+xcuserdata/
+
+# Swift Playgrounds
+# These should generally not be committed to a project repository
+*.timeline
+*.xcplayground
+*.playground/
+
+# Swift Package Manager (SPM)
+#
+# We do not commit generated dependencies or build products
+.build/
+Package.resolved
+
+# General macOS system files
+.DS_Store
+.localized
+.AppleDouble
+.LSOverride
+
+# Other temporary or generated files
+*.hmap
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+*.memgraph
