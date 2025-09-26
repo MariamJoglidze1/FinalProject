@@ -45,7 +45,7 @@ struct CountriesViewModelTests {
         
         #expect(viewModel.countries == [country])
         #expect(viewModel.alertParameters.wrappedValue == nil)
-        #expect(viewModel.nextPageURL?.contains("page=2") == true)
+        #expect(viewModel.getNextPageURL()?.contains("page=2") == true)
     }
     
     // MARK: - Failure Tests
@@ -145,11 +145,16 @@ struct CountriesViewModelTests {
             metadata: Metadata(currentOffset: 0, totalCount: 1)
         )
         service.result = .success(response)
-        
         let viewModel = CountriesViewModel(service: service)
+
+        // Call the function the first time. The isLoading flag will be set to true internally.
+        await viewModel.fetchCountries()
+
+        // Call it a second time. The guard clause should prevent a second API call.
         await viewModel.fetchCountries()
         
-        #expect(viewModel.countries.isEmpty)
+        #expect(!viewModel.countries.isEmpty)
+        #expect(service.callCount == 1)
     }
     
     @Test
@@ -165,7 +170,7 @@ struct CountriesViewModelTests {
         let viewModel = CountriesViewModel(service: service)
         await viewModel.fetchCountries()
         
-        #expect(viewModel.nextPageURL?.contains("languageCode=en") == true)
+        #expect(viewModel.getNextPageURL()?.contains("languageCode=en") == true)
     }
     
     @Test

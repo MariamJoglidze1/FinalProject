@@ -17,6 +17,7 @@ final class CountryDetailsViewModel {
     
     private let service: WikidataServiceProtocol
     private(set) var selectedCountry: Country
+    
     init(
         service: WikidataServiceProtocol = WikidataService(),
         country: Country,
