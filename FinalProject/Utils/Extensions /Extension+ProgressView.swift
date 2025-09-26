@@ -6,8 +6,15 @@ extension View {
             .blocksHitTesting(isShowing)
             .overlay(content: {
                 if isShowing {
-                    ProgressView()
-                        .progressViewStyle(.circular)
+                    ZStack {
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.5))
+                            .frame(width: 60, height: 60)
+                            .cornerRadius(4)
+                        
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                    }
                 }
             })
     }

@@ -75,12 +75,16 @@ extension CountryDetailsViewModel {
     func loadData() async {
         isLoading = true
         errorMessage = nil
+        
+        defer {
+            isLoading = false
+        }
+        
         do {
             let result = try await service.fetchCountryDetails(for: selectedCountry.wikiDataId)
             self.details = result
         } catch {
             self.errorMessage = .init(message: "Failed to load details: \(error.localizedDescription)")
         }
-        isLoading = false
     }
 }

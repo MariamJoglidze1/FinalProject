@@ -4,8 +4,7 @@ import SwiftUI
 @Observable
 final class CountriesViewModel {
     private(set) var countries: [Country] = []
-    var isLoading = false
-    private var dataIsFullyLoaded: Bool = false
+    private(set) var isLoading = false
     private var errorMessage: AlertParameters?
     
     var alertParameters: Binding<AlertParameters?> {
@@ -15,10 +14,13 @@ final class CountriesViewModel {
         )
     }
     
-     var nextPageURL: String? = {
+    private var nextPageURL: String? = {
         let code = Locale.currentLanguageCode
         return "https://wft-geo-db.p.rapidapi.com/v1/geo/countries?limit=10&languageCode=\(code)"
     }()
+    
+    private var dataIsFullyLoaded: Bool = false
+    private var previousFetchCountriesMethodCallDate: Date?
     
     private let service: CountriesServiceProtocol
     
@@ -26,6 +28,12 @@ final class CountriesViewModel {
         service: CountriesServiceProtocol
     ) {
         self.service = service
+    }
+}
+
+extension CountriesViewModel {
+    func getNextPageURL() -> String? {
+        nextPageURL
     }
     
     func fetchCountries() async {
@@ -38,7 +46,7 @@ final class CountriesViewModel {
     
     func loadMoreIfNeeded(current country: Country) async {
         guard let index = countries.firstIndex(of: country),
-              index >= countries.count - 2 else { return }
+              index > countries.count - 2 else { return }
         
         await fetchCountries()
     }
@@ -51,12 +59,33 @@ final class CountriesViewModel {
             FavouritesManager.shared.add(country)
         }
     }
-    
     // MARK: - Networking
     private func fetchCountries(urlString: String?) async {
         guard !isLoading, !dataIsFullyLoaded else { return }
-        isLoading = true
+        
+        // Check the time difference due to the limitation from Server. 1 request in 3 second.
+        if let previousCallDate = previousFetchCountriesMethodCallDate {
+            let timeDifference = Date().timeIntervalSince(previousCallDate)
+            
+            if timeDifference < 3 {
+                let delayNeeded = 3.0 - timeDifference
+                
+                if delayNeeded > 0 {
+                    // Wait for the remaining time
+                    isLoading = true
+                    let nanoseconds = UInt64(delayNeeded * 1_000_000_000)
+                    try? await Task.sleep(nanoseconds: nanoseconds)
+                }
+            }
+        }
+        
         errorMessage = nil
+        isLoading = true
+        previousFetchCountriesMethodCallDate = Date()
+
+        defer {
+            isLoading = false
+        }
         
         do {
             let response = try await service.fetchPage(urlString: urlString)
@@ -91,7 +120,5 @@ final class CountriesViewModel {
                 }
             )
         }
-        
-        isLoading = false
     }
 }

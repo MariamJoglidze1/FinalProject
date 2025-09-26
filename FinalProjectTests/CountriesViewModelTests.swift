@@ -147,7 +147,6 @@ struct CountriesViewModelTests {
         service.result = .success(response)
         
         let viewModel = CountriesViewModel(service: service)
-        viewModel.isLoading = true
         await viewModel.fetchCountries()
         
         #expect(viewModel.countries.isEmpty)
