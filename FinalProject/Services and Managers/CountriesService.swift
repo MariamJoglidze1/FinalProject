@@ -19,7 +19,7 @@ struct CountriesService: CountriesServiceProtocol {
     
     func fetchPage(urlString: String?) async throws -> CountriesResponse {
         guard let urlString, let url = URL(string: urlString) else {
-            throw FPErrorCode.tooManyRequest
+            throw FPErrorCode.badURL
         }
         
         var request = URLRequest(url: url)

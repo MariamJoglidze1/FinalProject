@@ -5,6 +5,7 @@ import SwiftUI
 final class CountriesViewModel {
     private(set) var countries: [Country] = []
     var isLoading = false
+    private var dataIsFullyLoaded: Bool = false
     private var errorMessage: AlertParameters?
     
     var alertParameters: Binding<AlertParameters?> {
@@ -53,7 +54,7 @@ final class CountriesViewModel {
     
     // MARK: - Networking
     private func fetchCountries(urlString: String?) async {
-        guard !isLoading else { return }
+        guard !isLoading, !dataIsFullyLoaded else { return }
         isLoading = true
         errorMessage = nil
         
@@ -68,6 +69,7 @@ final class CountriesViewModel {
                 }
                 nextPageURL = href.hasPrefix("http") ? href : "https://wft-geo-db.p.rapidapi.com" + href
             } else {
+                dataIsFullyLoaded = true
                 nextPageURL = nil
             }
         } catch {
