@@ -24,24 +24,18 @@ UserDefaults – lightweight persistence for favorites management.
 
 Testing – modern Swift Testing framework for unit tests.
 
-📂 Project Structure
-FinalProject/
-│
-├── Scenes/
-│   ├── CountryListView/
-│   ├── CountryDetailsView/
-│   ├── MapView/
-│   ├── ProfileView/
-│   └── Shared/
-│
-├── Managers/
-│   └── FavouritesManager.swift
-│
-├── Resources/
-│   └── Localizations/
-│
-└── Tests/
-    └── FinalProjectTests.swift
+## 📱 App Preview
+
+| Countries List | Country Details |  Profile |
+
+<img width="416" height="819" alt="Screenshot 2025-09-27 at 00 23 32" src="https://github.com/user-attachments/assets/3e2a329e-cc15-49b3-a624-59913b6f0367" />
+
+<img width="405" height="825" alt="Screenshot 2025-09-27 at 00 23 09" src="https://github.com/user-attachments/assets/230f2451-cd0d-4372-b9bf-c9d07b91ef51" />
+
+<img width="407" height="814" alt="Screenshot 2025-09-27 at 00 23 36" src="https://github.com/user-attachments/assets/2d3244c7-5a8e-4017-9442-d603a01c35e3" />
+
+
+
 
 🚀 Getting Started
 
