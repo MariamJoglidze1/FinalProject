@@ -19,14 +19,20 @@ struct CountriesService: CountriesServiceProtocol {
     
     func fetchPage(urlString: String?) async throws -> CountriesResponse {
         guard let urlString, let url = URL(string: urlString) else {
-            throw URLError(.badURL)
+            throw FPErrorCode.tooManyRequest
         }
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         headers.forEach { request.setValue($0.value, forHTTPHeaderField: $0.key) }
         
-        let (data, _) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 429 {
+            let message = (try? JSONSerialization.jsonObject(with: data) as? [String: Any])?["message"] as? String
+            throw FPError(statusCode: 429, message: message)
+        }
+        
         return try JSONDecoder().decode(CountriesResponse.self, from: data)
     }
 }

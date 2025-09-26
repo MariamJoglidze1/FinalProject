@@ -8,7 +8,7 @@ protocol WikidataServiceProtocol {
 struct WikidataService: WikidataServiceProtocol {
     func fetchCountryDetails(for wikiDataId: String) async throws -> CountryDetailsResponse {
         guard let url = URL(string: "https://www.wikidata.org/wiki/Special:EntityData/\(wikiDataId).json") else {
-            throw URLError(.badURL)
+            throw FPErrorCode.badURL
         }
         
         let (data, _) = try await URLSession.shared.data(from: url)
@@ -76,7 +76,7 @@ struct WikidataService: WikidataServiceProtocol {
     
     func fetchLabel(for entityId: String) async throws -> String {
         guard let url = URL(string: "https://www.wikidata.org/wiki/Special:EntityData/\(entityId).json") else {
-            throw URLError(.badURL)
+            throw FPErrorCode.badURL
         }
         
         let (data, _) = try await URLSession.shared.data(from: url)
@@ -100,6 +100,6 @@ struct WikidataService: WikidataServiceProtocol {
             return value
         }
         
-        throw URLError(.cannotParseResponse)
+        throw FPErrorCode.error
     }
 }

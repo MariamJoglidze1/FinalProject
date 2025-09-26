@@ -71,14 +71,23 @@ final class CountriesViewModel {
                 nextPageURL = nil
             }
         } catch {
+            var errorMsg: String {
+                if let apiError = error as? FPError, apiError.statusCode == 429 {
+                    apiError.message ?? "Too many requests. Please try again later."
+                } else {
+                    "Error: \(error.localizedDescription)"
+                }
+            }
+            
             errorMessage = .init(
-                message: "Error: \(error.localizedDescription)",
-                actionTitle: "Retry", // TODO: Localization
+                message: errorMsg,
+                actionTitle: "Retry",
                 action: { [weak self] in
                     Task {
-                        await self?.fetchCountries()
+                        await self?.fetchCountries(urlString: urlString)
                     }
-                })
+                }
+            )
         }
         
         isLoading = false
