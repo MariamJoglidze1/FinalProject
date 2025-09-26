@@ -4,22 +4,25 @@ import Testing
 @MainActor
 
 // MARK: - Mock Service
-struct MockWikidataService: WikidataServiceProtocol {
+final class MockWikidataService: WikidataServiceProtocol {
     var shouldThrow = false
-    var sampleDetails: CountryDetailsResponse?
+    var response: CountryDetailsResponse?
     
     func fetchCountryDetails(for wikiDataId: String) async throws -> CountryDetailsResponse {
-        try await Task.sleep(nanoseconds: 100_000_000)
-        if shouldThrow { throw URLError(.badServerResponse) }
-        return sampleDetails ?? CountryDetailsResponse(
-            flagURL: URL(string: "https://example.com/flag.png"),
-            capital: "Tbilisi",
-            population: 3729600,
-            continent: "Asia",
-            latitude: 41.7,
-            longitude: 44.8
+        if shouldThrow {
+            throw URLError(.badServerResponse)
+        }
+        return response ?? CountryDetailsResponse(
+            flagURL: URL(string: "https://test.com/flag.png"),
+            capital: "Test Capital",
+            population: 123456,
+            continent: "Test Continent",
+            latitude: 10.0,
+            longitude: 20.0
         )
     }
     
-    func fetchLabel(for entityId: String) async throws -> String { "MockLabel" }
+    func fetchLabel(for entityId: String) async throws -> String {
+        "Mock Label"
+    }
 }

@@ -4,7 +4,7 @@ import SwiftUI
 @Observable
 final class CountriesViewModel {
     private(set) var countries: [Country] = []
-    private(set) var isLoading = false
+    var isLoading = false
     private var errorMessage: AlertParameters?
     
     var alertParameters: Binding<AlertParameters?> {
@@ -14,7 +14,7 @@ final class CountriesViewModel {
         )
     }
     
-    private var nextPageURL: String? = {
+     var nextPageURL: String? = {
         let code = Locale.currentLanguageCode
         return "https://wft-geo-db.p.rapidapi.com/v1/geo/countries?limit=10&languageCode=\(code)"
     }()
