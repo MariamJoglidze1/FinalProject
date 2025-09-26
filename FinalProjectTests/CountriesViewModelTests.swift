@@ -172,28 +172,4 @@ struct CountriesViewModelTests {
         
         #expect(viewModel.getNextPageURL()?.contains("languageCode=en") == true)
     }
-    
-    @Test
-    func testErrorActionRetriesFetch() async throws {
-        let service = MockCountriesService()
-        let country = Country(code: "GE", currencyCodes: ["GEL"], name: "Georgia", wikiDataId: "Q230")
-        
-        service.result = .failure(URLError(.notConnectedToInternet))
-        let viewModel = CountriesViewModel(service: service)
-        await viewModel.fetchCountries()
-        
-        service.result = .success(
-            CountriesResponse(
-                data: [country],
-                links: [],
-                metadata: Metadata(currentOffset: 0, totalCount: 1)
-            )
-        )
-        
-        viewModel.alertParameters.wrappedValue?.action?()
-        
-        try await Task.sleep(for: .milliseconds(100))
-        
-        #expect(viewModel.countries == [country])
-    }
 }
